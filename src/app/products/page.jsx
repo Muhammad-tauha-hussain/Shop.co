@@ -1,32 +1,26 @@
-"use client"
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+"use client";
+import React, { useState } from "react";
 import { FaFilter, FaArrowRight } from "react-icons/fa";
-import { fetching_Data } from "../library/api";
+import { IoIosArrowDropup } from "react-icons/io";
+
 import Card from "@/components/Card";
 import { ProductsData } from "@/data/data";
 
-const Products =  () => {
+const Products = () => {
   const [price, setPrice] = useState(50); // Initial price value
-  const [products, setProducts] = useState([]);
+  const [products] = useState(ProductsData); // Products data is static, no need to modify
+  const [filteredProducts, setFilteredProducts] = useState(ProductsData); // Initialize with all products
 
-  useEffect(() => {
-    setProducts(ProductsData)
-    // const fetchData = async () => {
-    //   const data = await fetching_Data(); 
-    //   setProducts(data); 
-    //   console.log(data); 
-    // };
-
-    // fetchData(); 
-  }, []);
-  
-  
+  const filterProductsFunc = (filtered) => {
+    console.log(filtered.toLowerCase());
+    const filterItems = ProductsData.filter((item) => item.category === filtered.toLowerCase());
+    setFilteredProducts(filterItems);
+  };
 
   return (
     <div className="w-[90%] mx-auto mb-20 mt-5 flex gap-5">
+      {/* Filter Sidebar */}
       <div className="w-full md:w-1/3 border rounded-lg shadow-lg p-4 bg-white">
-        {/* Filter Header */}
         <div className="flex justify-between items-center border-b pb-3 mb-4">
           <span className="text-lg font-semibold text-gray-800">Filter</span>
           <FaFilter className="text-gray-500" />
@@ -36,8 +30,9 @@ const Products =  () => {
         <div>
           <h5 className="text-lg font-semibold mb-3">Categories</h5>
           <ul className="space-y-2">
-            {["Tshirts", "Shorts", "Shirts", "Hoodie", "Jeans"].map((item, idx) => (
+            {["T-shirts", "Shorts", "Shirts", "Hoodies", "Jeans"].map((item, idx) => (
               <li
+                onClick={() => filterProductsFunc(item)}
                 key={idx}
                 className="flex justify-between items-center text-gray-700 hover:text-black cursor-pointer"
               >
@@ -121,39 +116,76 @@ const Products =  () => {
             ))}
           </div>
         </div>
-
-        <hr className="my-6" />
-
-        {/* Dress Style */}
-        <div>
-          <h5 className="text-lg font-semibold mb-3">Dress Style</h5>
-          <ul className="space-y-2">
-            {["Casual", "Formal", "Party", "Gym"].map((style, idx) => (
+        <hr />
+        {/* dress styles */}
+        {/* Dress Styles */}
+        <div className="mt-6">
+          <div className="flex justify-between">
+          <h5 className="text-lg font-semibold flex items-center gap-2 cursor-pointer">
+            Dress Styles 
+          </h5>
+          <IoIosArrowDropup className="text-gray-600 text-2xl" />
+          </div>
+          <ul className="mt-3 space-y-2">
+            {[
+              "Casual",
+              "Formal",
+              "Streetwear",
+              "Sportswear",
+              "Jackets",
+              "Pants",
+              "Shoes",
+              "Accessories",
+              "Swimwear",
+              "Loungewear",
+              "Bags",
+              "Sweaters",
+              "Dresses",
+              "Skirts",
+              "Ties",
+              "Headwear",
+              "Scarves",
+              "Hats",
+              "Necklaces",
+              "Jewelry",
+              "Watches",
+              "Hair Accessories",
+              "Fragrances",
+              "Home Decor",
+              "Gifts",
+              "Beauty & Health",
+              "Pet Care",
+              "Garden & Outdoor",
+              "Kids",
+              "Baby",
+              "Toys & Games",
+              "Electronics",
+              "Books & Magazines",
+              "Clothing & Shoes",
+            ].map((dress, idx) => (
               <li
                 key={idx}
                 className="flex justify-between items-center text-gray-700 hover:text-black cursor-pointer"
               >
-                <span>{style}</span>
+                <span>{dress}</span>
                 <FaArrowRight />
               </li>
             ))}
           </ul>
         </div>
+        <hr className="my-6" />
+        
 
-        <button className="w-full mt-6 bg-black text-white rounded-full px-4 py-3 font-semibold hover:bg-gray-800 transition-all">
-          Apply Filter
-        </button>
-      </div>
-      <div className="w-full  md:w-2/3">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {
-                products.map((item)=>(
+      </div> {/* Close Filter Sidebar */}
 
-                   <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price}/> 
-                ))
-              }
-            </div>
-      </div>
+      {/* Product Grid */}
+      <div className="w-full md:w-2/3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {filteredProducts.map((item) => (
+            <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
+          ))}
+        </div>
+      </div> {/* Close Product Grid */}
     </div>
   );
 };
