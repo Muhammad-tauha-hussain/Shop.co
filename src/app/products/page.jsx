@@ -11,12 +11,30 @@ const Products = () => {
   const [products] = useState(ProductsData); // Products data is static, no need to modify
   const [filteredProducts, setFilteredProducts] = useState(ProductsData); // Initialize with all products
 
+  // const filterProductsFunc = (filtered) => {
+  //   console.log(filtered.toLowerCase());
+  //   const filterItems = ProductsData.filter((item) => 
+  //     item.category === filtered.toLowerCase() || item.sizes.includes(filtered.toLowerCase())
+  //   );
+  //   setFilteredProducts(filterItems);
+  // };
+
   const filterProductsFunc = (filtered) => {
     console.log(filtered.toLowerCase());
-    const filterItems = ProductsData.filter((item) => item.category === filtered.toLowerCase());
+  
+    const filterItems = ProductsData.filter((item) => {
+      // Filter based on category
+      const isCategoryMatch = item.category.toLowerCase() === filtered.toLowerCase();
+      
+      // Filter based on size
+      const isSizeMatch = item.sizes.some((size) => size.toLowerCase() === filtered.toLowerCase());
+  
+      return isCategoryMatch || isSizeMatch;
+    });
+  
     setFilteredProducts(filterItems);
   };
-
+  
   return (
     <div className="w-[90%] mx-auto mb-20 mt-5 flex gap-5">
       {/* Filter Sidebar */}
@@ -97,19 +115,20 @@ const Products = () => {
           <h5 className="text-lg font-semibold mb-3">Size</h5>
           <div className="flex flex-wrap gap-3">
             {[
-              "XX-Small",
-              "X-Small",
-              "Small",
-              "Medium",
-              "Large",
-              "X-Large",
-              "XX-Large",
-              "3X-Large",
-              "4X-Large",
+              "XX-S",
+              "X-S",
+              "S",
+              "M",
+              "L",
+              "XL",
+              "XXL",
+              "3XL",
+              "4XL",
             ].map((size, idx) => (
               <span
+                onClick={() => filterProductsFunc(size)}
                 key={idx}
-                className="px-3 py-1 text-sm border rounded-lg text-gray-700 hover:bg-gray-800 hover:text-white cursor-pointer"
+                className="px-6 py-3 text-sm border rounded-lg text-gray-700 hover:bg-gray-800 hover:text-white cursor-pointer"
               >
                 {size}
               </span>
@@ -121,10 +140,10 @@ const Products = () => {
         {/* Dress Styles */}
         <div className="mt-6">
           <div className="flex justify-between">
-          <h5 className="text-lg font-semibold flex items-center gap-2 cursor-pointer">
-            Dress Styles 
-          </h5>
-          <IoIosArrowDropup className="text-gray-600 text-2xl" />
+            <h5 className="text-lg font-semibold flex items-center gap-2 cursor-pointer">
+              Dress Styles 
+            </h5>
+            <IoIosArrowDropup className="text-gray-600 text-2xl" />
           </div>
           <ul className="mt-3 space-y-2">
             {[
@@ -174,18 +193,25 @@ const Products = () => {
           </ul>
         </div>
         <hr className="my-6" />
-        
-
       </div> {/* Close Filter Sidebar */}
 
       {/* Product Grid */}
       <div className="w-full md:w-2/3">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {filteredProducts.map((item) => (
-            <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
-          ))}
-        </div>
-      </div> {/* Close Product Grid */}
+  {
+    filteredProducts.length === 0 ? (
+      <div className="flex items-center justify-center">
+        <p className="text-center text-3xl text-gray-700">No products found matching your criteria.</p>
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {filteredProducts.map((item) => (
+          <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
+        ))}
+      </div>
+    )
+  }
+</div> {/* Close Product Grid */}
+
     </div>
   );
 };
