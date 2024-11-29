@@ -1,40 +1,53 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFilter, FaArrowRight } from "react-icons/fa";
 import { IoIosArrowDropup } from "react-icons/io";
 
 import Card from "@/components/Card";
 import { ProductsData } from "@/data/data";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { auth } from "@/firebase/firebaseConfig";
+// import { useRouter } from "next/router";
 
 const Products = () => {
+  // const router = useRouter();
   const [price, setPrice] = useState(50); // Initial price value
   const [products] = useState(ProductsData); // Products data is static, no need to modify
   const [filteredProducts, setFilteredProducts] = useState(ProductsData); // Initialize with all products
 
-  // const filterProductsFunc = (filtered) => {
-  //   console.log(filtered.toLowerCase());
-  //   const filterItems = ProductsData.filter((item) => 
-  //     item.category === filtered.toLowerCase() || item.sizes.includes(filtered.toLowerCase())
-  //   );
-  //   setFilteredProducts(filterItems);
-  // };
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     if (!user) {
+  //       router.push("/login");
+  //     } else {
+  //       setIsAuthenticated(true);
+  //     }
+  //   });
+
+  //   return () => unsubscribe(); // Cleanup listener on unmount
+  // }, [router]);
+
+  // // Prevent rendering until authentication is checked
+  // if (isAuthenticated === null) {
+  //   return <div className="text-center py-10">Loading...</div>;
+  // }
 
   const filterProductsFunc = (filtered) => {
     console.log(filtered.toLowerCase());
-  
+
     const filterItems = ProductsData.filter((item) => {
       // Filter based on category
       const isCategoryMatch = item.category.toLowerCase() === filtered.toLowerCase();
-      
+
       // Filter based on size
       const isSizeMatch = item.sizes.some((size) => size.toLowerCase() === filtered.toLowerCase());
-  
+
       return isCategoryMatch || isSizeMatch;
     });
-  
+
     setFilteredProducts(filterItems);
   };
-  
+
   return (
     <div className="w-[90%] mx-auto mb-20 mt-5 flex gap-5">
       {/* Filter Sidebar */}
@@ -141,7 +154,7 @@ const Products = () => {
         <div className="mt-6">
           <div className="flex justify-between">
             <h5 className="text-lg font-semibold flex items-center gap-2 cursor-pointer">
-              Dress Styles 
+              Dress Styles
             </h5>
             <IoIosArrowDropup className="text-gray-600 text-2xl" />
           </div>
@@ -197,20 +210,20 @@ const Products = () => {
 
       {/* Product Grid */}
       <div className="w-full md:w-2/3">
-  {
-    filteredProducts.length === 0 ? (
-      <div className="flex items-center justify-center">
-        <p className="text-center text-3xl text-gray-700">No products found matching your criteria.</p>
-      </div>
-    ) : (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {filteredProducts.map((item) => (
-          <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
-        ))}
-      </div>
-    )
-  }
-</div> {/* Close Product Grid */}
+        {
+          filteredProducts.length === 0 ? (
+            <div className="flex items-center justify-center">
+              <p className="text-center text-3xl text-gray-700">No products found matching your criteria.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {filteredProducts.map((item) => (
+                <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
+              ))}
+            </div>
+          )
+        }
+      </div> {/* Close Product Grid */}
 
     </div>
   );

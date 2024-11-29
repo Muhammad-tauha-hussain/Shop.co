@@ -20,7 +20,7 @@ const page = () => {
       setProductdata(detailedProduct);
     };
     fetch_product();
-  }, [id]); // Include `id` as a dependency
+  }, [id]); 
 
   useEffect(() => {
     if (productdata) {
@@ -104,17 +104,10 @@ const page = () => {
             <hr />
             <h5 className="font-medium text-lg">Choose Size:</h5>
             <div className="flex flex-wrap gap-3">
-              {[
-                "XX-Small",
-                "X-Small",
-                "Small",
-                "Medium",
-                "Large",
-                "X-Large",
-              ].map((size, idx) => (
+              {productdata?.sizes.map((size, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 text-sm border rounded-lg text-gray-700 hover:bg-gray-800 hover:text-white cursor-pointer"
+                  className="px-12 py-2 text-sm border rounded-lg text-gray-700 hover:bg-gray-800 hover:text-white cursor-pointer"
                 >
                   {size}
                 </span>
