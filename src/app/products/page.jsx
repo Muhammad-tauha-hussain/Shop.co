@@ -51,7 +51,7 @@ const Products = () => {
   return (
     <div className="w-[90%] mx-auto mb-20 mt-5 flex gap-5">
       {/* Filter Sidebar */}
-      <div className="w-full md:w-1/3 border rounded-lg shadow-lg p-4 bg-white">
+      <div className="w-full md:w-1/3 border rounded-lg shadow-lg p-4 h-fit bg-white">
         <div className="flex justify-between items-center border-b pb-3 mb-4">
           <span className="text-lg font-semibold text-gray-800">Filter</span>
           <FaFilter className="text-gray-500" />

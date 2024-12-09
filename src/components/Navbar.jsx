@@ -30,17 +30,17 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 On Sale
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 New Arrival
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 Brands
               </Link>
             </li>
@@ -68,23 +68,23 @@ const Navbar = () => {
         <div className="sm:hidden bg-white w-full shadow-lg">
           <ul className="flex flex-col items-center space-y-4 py-4 text-gray-800 font-bold">
             <li>
-              <Link href="#" className="hover:text-gray-900 flex gap-1 items-center">
+              <Link href="/products" className="hover:text-gray-900 flex gap-1 items-center">
                 Shop
                 <RiArrowDropDownLine className="text-2xl" />
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 On Sale
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 New Arrival
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-gray-900">
+              <Link href="/commingSoon" className="hover:text-gray-900">
                 Brands
               </Link>
             </li>
