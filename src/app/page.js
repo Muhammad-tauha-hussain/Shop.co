@@ -11,8 +11,7 @@ import Testimonials from "@/components/Testimonials";
 import { testimonials } from "@/data/data";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase/firebaseConfig";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
+
 
 function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null means "loading"
@@ -90,7 +89,7 @@ function Home() {
   ];
 
   return (
-    <Provider store={store}>
+    <>
     <div>
       <Header />
       <NavbarAdds />
@@ -137,7 +136,7 @@ function Home() {
         ))}
       </div>
     </div>
-    </Provider>
+    </>
   );
 }
 
