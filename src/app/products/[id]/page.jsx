@@ -7,29 +7,31 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const page = () => {
-  const [productdata, setProductdata] = useState(null); // Set default state to null
-  const [relatedProducts, setRelatedProducts] = useState([]);
-  const { id } = useParams();
+const Page = () => {
+  const [productdata, setProductdata] = useState(null); // State is null initially
+  const [relatedProducts, setRelatedProducts] = useState([]); // State for related products
+  const { id } = useParams(); // Getting the id parameter
 
   useEffect(() => {
-    const fetch_product = () => {
-      const detailedProduct = ProductsData.find(
-        (item) => item.id === parseInt(id)
-      );
-      setProductdata(detailedProduct);
-    };
-    fetch_product();
-  }, [id]); 
+    if (id) {
+      const fetchProduct = () => {
+        const detailedProduct = ProductsData.find(
+          (item) => item.id === parseInt(id)
+        );
+        setProductdata(detailedProduct || null); // Set to null if not found
+      };
+      fetchProduct();
+    }
+  }, [id]);
 
   useEffect(() => {
     if (productdata) {
-      const relatedProducts = ProductsData.filter(
-        (item) => item.category === productdata?.category && item.id !== parseInt(id)
+      const relatedProductsList = ProductsData.filter(
+        (item) => item.category === productdata.category && item.id !== productdata.id
       ).slice(0, 3);
-      setRelatedProducts(relatedProducts);
+      setRelatedProducts(relatedProductsList);
     }
-  }, [productdata, id]); // Include `productdata` and `id` as dependencies
+  }, [productdata]);
 
   return (
     <div className="p-6 md:p-12 bg-gray-50">
@@ -43,7 +45,7 @@ const page = () => {
                   productdata?.image ||
                   "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?auto=compress&cs=tinysrgb&w=600"
                 }
-                alt={productdata?.headings || "Product image"}
+                alt={productdata?.name || "Product image"}
                 width={200}
                 height={200}
                 className="rounded-lg ms-4 border border-black"
@@ -53,7 +55,7 @@ const page = () => {
                   productdata?.image ||
                   "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?auto=compress&cs=tinysrgb&w=600"
                 }
-                alt={productdata?.headings || "Product image"}
+                alt={productdata?.name || "Product image"}
                 width={200}
                 height={200}
                 className="rounded-lg ms-4 border border-black"
@@ -62,11 +64,8 @@ const page = () => {
             <div className="flex items-center">
               {productdata?.image ? (
                 <Image
-                  src={
-                    productdata?.image ||
-                    "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?auto=compress&cs=tinysrgb&w=600"
-                  }
-                  alt={productdata?.headings || "Product image"}
+                  src={productdata.image}
+                  alt={productdata.name}
                   width={500}
                   height={500}
                   objectFit="cover"
@@ -148,26 +147,9 @@ const page = () => {
         <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
           You might also like
         </h1>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 m-auto">
-          {relatedProducts.map((productdata, i) => (
-            <div
-              key={i}
-              className="group relative overflow-hidden rounded-lg border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <Card
-                url={productdata?.image}
-                headings={productdata?.name}
-                id={productdata?.id}
-                price={productdata?.price}
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
-                <Link href={`/products/${productdata.id}`}>
-                  <button className="text-white font-semibold text-lg">
-                    View Product
-                  </button>
-                </Link>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {relatedProducts.map((product) => (
+            <Card key={product.id} product={product} />
           ))}
         </div>
       </div>
@@ -175,4 +157,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
